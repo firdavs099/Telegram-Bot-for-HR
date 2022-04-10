@@ -4,9 +4,9 @@ from loader import bot
 from loader import dp
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ReplyKeyboardRemove
-from data.config import GROUP
+from data.config import GROUP, ADMINS
 from datetime import datetime
-from keyboards.default import yes_or_no, phone, locations, shift
+from keyboards.default import yes_or_no, phones, locations, shift
 from states import get_data
 
 
@@ -36,7 +36,7 @@ async def get_name(message: types.Message, state: FSMContext):
 
     await message.answer("* Phone: \n\n"
                          "* Phone:\n"
-                         "(<i>+998990001122</i>)\n\n,", reply_markup=phone)
+                         "(<i>+998990001122</i>)\n\n")
     await get_data.next()
 
 
@@ -53,7 +53,7 @@ async def get_number(message: types.Message, state: FSMContext):
 @dp.message_handler(state=get_data.is_student)
 async def is_std(message: types.Message, state: FSMContext):
     answer_std = message.text
-    await state.update_data(student=is_std)
+    await state.update_data(student=answer_std)
 
     await message.answer("* В каком филиале вы хотите работать? \n\n"
                          "* Qaysi filialda ishlamoqchisiz?", reply_markup=locations)
@@ -84,7 +84,7 @@ async def get_exp(message: types.Message, state: FSMContext):
     data = await state.get_data()
     name = data.get("name")
     db = data.get("db")
-    number = data.get("number")
+    phone = data.get("number")
     student = data.get("student")
     location = data.get("location")
     shiftt = data.get("shift")
@@ -94,10 +94,13 @@ async def get_exp(message: types.Message, state: FSMContext):
                    f"* <i><b>Name</b></i>: {name}\n"
                    f"* <i><b>Date of birth</b></i>: {db}\n"
                    f"* <i><b>Is student</b></i>: {student}\n"
+                   f"* <i><b>Phone</b></i>: {phone}\n"
                    f"* <i><b>Location</b></i>: {location}\n"
                    f"* <i>Time</i>: {shiftt}\n"
                    f"* <i><b>experience</b></i>: {exp}\n\n"
-                   f"registered time: {str(dates)}")
+                   f"Registered time:   {str(dates)}")
     await message.answer("Thanks", reply_markup=ReplyKeyboardRemove())
     await bot.send_message(chat_id=GROUP, text=prof_detail)
     await state.finish()
+
+
