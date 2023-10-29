@@ -1,5 +1,6 @@
 # Telegram-Bot-for-HR
 
+Used Aiogram
 <h1>Basic Telegram bot which can help to gather information about candidate, such as:</h1>
 <li>Name</li>
 <li>Surname</li>
